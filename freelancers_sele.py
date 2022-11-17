@@ -7,7 +7,11 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import NoSuchElementException
 from bs4 import BeautifulSoup
 from time import sleep
-import pandas, os, datetime
+import pandas as pd
+import sys
+import os
+import datetime
+# TODO enhance README with install and use instructions
 
 separator = 40*"*"
 keyword = "test"
@@ -43,12 +47,14 @@ def check_pagination(pagination):
     pages = pagination.text.split(' ')
     print(pages[1], pages[2], pages[3])
 
-def main(args):
-    if not args:
-        args = ["-"]
-    for arg in args:
-        if arg != "-":
-            print(arg)
+# TODO add argument logic
+# https://realpython.com/python-command-line-arguments/
+# def main(args):
+#     if not args:
+#         args = ["-"]
+#     for arg in args:
+#         if arg != "-":
+#             print(arg)
 
 
 # selectors
@@ -68,6 +74,7 @@ options.add_argument("start-maximized")
 # to supress the error messages/logs
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
 chrome_driver = webdriver.Chrome(options=options, service=Service(ChromeDriverManager().install()))
+pd.set_option('display.max_colwidth', None)
 
 try:
     chrome_driver.get(website + search_link)
@@ -99,6 +106,7 @@ try:
     jobs_elem = chrome_driver.find_elements(By.CSS_SELECTOR, job_info_css)
     for job in jobs_elem:
         soup_job = BeautifulSoup(job.get_attribute('innerHTML'), 'html.parser')
+        # TODO change .append to .concat
         all_jobs.append(jobs_info(soup_job))
     
     # steering through the other pages
@@ -116,15 +124,15 @@ try:
             next = None
     
     # read csv file and write into it new entries
-    job_list_df = pandas.read_csv(csv_file)
-    job_list_df_new = pandas.DataFrame()
+    job_list_df = pd.read_csv(csv_file)
+    job_list_df_new = pd.DataFrame()
     for job in all_jobs:
         if job[1] not in job_list_df.values :
             # print(*job, sep = "\n")
             # print(separator)
-            series = pandas.Series(job)
+            series = pd.Series(job)
             job_list_df_new = job_list_df_new.append(series, ignore_index=True)
-    job_list_df = pandas.DataFrame(all_jobs)
+    job_list_df = pd.DataFrame(all_jobs)
     # print(csv_file)
     if not job_list_df_new.empty:
         print("New jobs:", job_list_df_new)
@@ -141,3 +149,6 @@ except NoSuchElementException as ex:
     
 finally:
     chrome_driver.close()
+    
+# if __name__ == "__main__":
+#     main(sys.argv[1:])
