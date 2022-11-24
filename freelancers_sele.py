@@ -3,6 +3,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import NoSuchElementException
 from bs4 import BeautifulSoup
@@ -88,6 +89,8 @@ try:
     input_city.click()
     sleep(1)
     input_city.send_keys(city)
+        
+    
     
     # select first choice
     WebDriverWait(chrome_driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, city_selectfirst_css)))
