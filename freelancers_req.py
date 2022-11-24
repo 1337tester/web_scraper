@@ -10,7 +10,8 @@ from random import randint
 website = "https://www.freelance.de"
 keyword = "test"
 location = ['Zürich', '32325', '198']
-all_jobs = pd.DataFrame(columns = ["Jobs", "URL"])
+df_columns = ["Jobs", "URL"]
+all_jobs = pd.DataFrame(columns = df_columns)
 # pd.set_option('display.max_colwidth', None)
 dir_path = os.path.realpath(os.path.dirname(__file__))
 csv_file = os.path.join(dir_path, "jobs_" + keyword + ".csv")
@@ -37,20 +38,25 @@ headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:107.0) Gec
 def process_jobs(csv_file, all_jobs, csv_file_timestamped):
     if os.path.exists(csv_file):
         job_list_df = pd.read_csv(csv_file)
-        job_list_df_new = pd.DataFrame()
-        for row in all_jobs.iterrows():
-
+        job_list_df_new = pd.DataFrame(columns = df_columns)
         
-        for job in all_jobs:
-            if job[1] not in job_list_df.values :
-                # print(*job, sep = "\n")
-                # print(separator)
-                series = pd.Series(job)
-                # job_list_df_new = job_list_df_new.append(series, ignore_index=True)
-                frames = [job_list_df_new, series]
-                job_list_df_new = pd.concat(frames)
+        
+        #TODO compare two dataframes        
+        for job in all_jobs.values:
+            # print("Job comparing - ", *job, sep = "\n")
+            # print(type(job))
+            # print(job[0])
+            # print(job[1])
+            # print(100*"*")
+
+            if job[1] not in job_list_df.values:
+                print("Before ", job_list_df_new)
+                job_list_df_new.loc[len(job_list_df_new)] = job
+                print("After ")
+                print(job_list_df_new)
         print("Length of dataframe: ", print(len(job_list_df_new.index)))
         if not job_list_df_new.empty:
+            pass
             print("New jobs:", job_list_df_new)
             job_list_df_new.to_csv(csv_file_timestamped)
         else: print("There are no new jobs for this searchterm")
@@ -65,7 +71,8 @@ def jobs_info(soup, df):
     jobs = soup.find_all("div", {"class":"list-item-content"})
     for job in jobs:
         job_details =[text for text in job.stripped_strings]
-        a_tags = soup.find_all('a', href=True)
+        a_tags = job.find_all('a', href=True)
+        
         # assigning strings to a meaningfull parameter
         name = job_details[0]
         to_strip = "/highlight=" + keyword
