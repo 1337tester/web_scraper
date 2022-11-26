@@ -40,20 +40,9 @@ def process_jobs(csv_file, all_jobs, csv_file_timestamped):
         job_list_df = pd.read_csv(csv_file)
         job_list_df_new = pd.DataFrame(columns = df_columns)
         
-        
-        #TODO compare two dataframes        
         for job in all_jobs.values:
-            # print("Job comparing - ", *job, sep = "\n")
-            # print(type(job))
-            # print(job[0])
-            # print(job[1])
-            # print(100*"*")
-
             if job[1] not in job_list_df.values:
-                print("Before ", job_list_df_new)
                 job_list_df_new.loc[len(job_list_df_new)] = job
-                print("After ")
-                print(job_list_df_new)
         print("Length of dataframe: ", print(len(job_list_df_new.index)))
         if not job_list_df_new.empty:
             pass
