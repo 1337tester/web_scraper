@@ -12,7 +12,6 @@ keyword = "test"
 location = ['Zürich', '32325', '198']
 df_columns = ["Jobs", "URL"]
 all_jobs = pd.DataFrame(columns = df_columns)
-# pd.set_option('display.max_colwidth', None)
 dir_path = os.path.realpath(os.path.dirname(__file__))
 csv_file = os.path.join(dir_path, "jobs_" + keyword + ".csv")
 timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
@@ -46,7 +45,7 @@ def process_jobs(csv_file, all_jobs, csv_file_timestamped):
         print("Length of dataframe: ", print(len(job_list_df_new.index)))
         if not job_list_df_new.empty:
             pass
-            print("New jobs:", job_list_df_new)
+            print("New jobs:", job_list_df_new.to_markdown())
             job_list_df_new.to_csv(csv_file_timestamped)
         else: print("There are no new jobs for this searchterm")
         all_jobs.to_csv(csv_file)
