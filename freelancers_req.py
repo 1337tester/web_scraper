@@ -35,7 +35,7 @@ headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:107.0) Gec
            'Referer':'https://www.freelance.de/Projekte/K/IT-Entwicklung-Projekte/?_offset=',
            'Connection':'keep-alive'
            }
-def process_jobs(csv_file, all_jobs, csv_file_timestamped):
+def process_jobs(csv_file, all_jobs, csv_file_timestamped) -> None:
     if os.path.exists(csv_file):
         job_list_df = pd.read_csv(csv_file)
         job_list_df_new = pd.DataFrame(columns = df_columns)
@@ -45,9 +45,9 @@ def process_jobs(csv_file, all_jobs, csv_file_timestamped):
                 job_list_df_new.loc[len(job_list_df_new)] = job
         print("Length of dataframe: ", print(len(job_list_df_new.index)))
         if not job_list_df_new.empty:
-            pass
             print("New jobs:")
             print(job_list_df_new.to_markdown(tablefmt="fancy_grid"))
+            job_list_df_new.to_csv(csv_file_timestamped)
         else: print("There are no new jobs for this searchterm")
         all_jobs.to_csv(csv_file)
     else:
