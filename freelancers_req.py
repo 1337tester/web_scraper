@@ -104,44 +104,12 @@ with requests.Session() as ss:
     
      # read csv file and write into it new entries
     process_jobs(csv_file, all_jobs, csv_file_timestamped)
-     
     
-    
-    # print(100*"*")
-    # print(all_jobs)
-    # print(100*"*")
-
-    # print('Cookies1 req - ', ss.cookies)
-    # jar = response1.cookies
-
-    # response2 = ss.get(url2, headers=headers)
-    # print('Cookies2 req - ', ss.cookies)
-
-    # response3 = ss.get(url3, headers=headers    )
-    # print('Cookies3 req - ', ss.cookies)
-
-
-    # soup1 = BeautifulSoup(response1.text, "html.parser")
-    # soup2 = BeautifulSoup(response2.text, "html.parser")
-    # soup3 = BeautifulSoup(response3.text, "html.parser")
-
-    # pagination2 = soup2.find('div', id='pagination').p
-    # pagination3 = soup3.find('div', id='pagination').p
-
-    # figuring out how many pages we need to traverse
-
-    # print('Pagination text split - ', pagination1.text.split()[3])
-    # print('next_pages - ', next_pages)
-    # print('Cookies 1 - ', response1.cookies.values())
-    # print('Pagination 2 - ', pagination2.text)
-    # print('Cookies 2 - ', response2.cookies.values())
-    # print('Pagination 3 - ', pagination3.text)
-    # print('Cookies 3 - ', response3.cookies.values())
-
-
-       
-
-# soup = BeautifulSoup(response2html, "html.parser")
-
-# jobs = soup.find_all("div", class_="list-item-main")
-# job_details = [text for text in jobs[0].stripped_strings]
+# TODO add argument logic
+# https://realpython.com/python-command-line-arguments/
+# def main(args):
+#     if not args:
+#         args = ["-"]
+#     for arg in args:
+#         if arg != "-":
+#             print(arg)

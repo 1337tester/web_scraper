@@ -52,15 +52,6 @@ print(separator)
 
 list_jobs(browser)
 
-# Display the results
-# print(response.text)
-# messages = browser.page.find("a", fl_class="fl_class_project_read")
-# if messages:
-#     print(messages.text)
-
-
-
-
 l = browser.links(link_text='Next')
 # print(type(l), l)
 print(browser.follow_link(l))
@@ -70,22 +61,6 @@ list_jobs(browser)
 
 pagess = browser.page.select('[id=pagination]')[0].p.text.split(' ')
 print(pagess[2], pagess[3], pagess[4])
-
-# for string in browser.page.stripped_strings:
-#     print(repr(string))
-
-# for jobinfo in browser.page.find_all("div", class_="col-sm-4 no-padding-left overview"):
-#     print(jobinfo.li.contents[1])   
-
-# for string in browser.page.stripped_strings:
-#     print(repr(string))
-
-# print(browser.page.select('#project_link_1013462'))
-# for link in browser.page.select('#object_id_983861 > div:nth-child(3) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > h3:nth-child(1)'):
-#     print(link)
-
-
-
 
 if __name__ == "__main__":
     main(sys.argv[1:])

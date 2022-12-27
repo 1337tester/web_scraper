@@ -12,7 +12,6 @@ import pandas as pd
 import sys
 import os
 import datetime
-# TODO enhance README with install and use instructions
 
 separator = 40*"*"
 keyword = "test"
@@ -48,16 +47,6 @@ def check_pagination(pagination):
     pages = pagination.text.split(' ')
     print(pages[1], pages[2], pages[3])
 
-# TODO add argument logic
-# https://realpython.com/python-command-line-arguments/
-# def main(args):
-#     if not args:
-#         args = ["-"]
-#     for arg in args:
-#         if arg != "-":
-#             print(arg)
-
-
 # selectors
 freetext_css = '#__search_freetext'
 city_css = '#__search_city'
@@ -89,8 +78,6 @@ try:
     input_city.click()
     sleep(1)
     input_city.send_keys(city)
-        
-    
     
     # select first choice
     WebDriverWait(chrome_driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, city_selectfirst_css)))
@@ -143,15 +130,8 @@ try:
     else: print("There are no new jobs for this searchterm")
     job_list_df.to_csv(csv_file)
     
-    # pagination = chrome_driver.find_element(By.CSS_SELECTOR, pagination_css)
-    # check_pagination(pagination)
-    
-    
 except NoSuchElementException as ex:
     print(ex.args)
     
 finally:
     chrome_driver.close()
-    
-# if __name__ == "__main__":
-#     main(sys.argv[1:])
