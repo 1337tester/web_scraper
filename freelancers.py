@@ -59,8 +59,5 @@ print('URL => ', browser.get_url())
 
 list_jobs(browser)
 
-pagess = browser.page.select('[id=pagination]')[0].p.text.split(' ')
-print(pagess[2], pagess[3], pagess[4])
-
 if __name__ == "__main__":
     main(sys.argv[1:])
