@@ -8,17 +8,14 @@ from random import randint
 import click
 
 # relevant data for searches
-
 keyword = "test"
 location = ['Zürich', '32325', '198']
 df_columns = ["Jobs", "URL"]
-# pd.set_option('display.max_colwidth', 0)
 dir_path = os.path.realpath(os.path.dirname(__file__))
 csv_file = os.path.join(dir_path, "jobs_" + keyword + ".csv")
 timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
 csv_file_timestamped = os.path.join(dir_path, "jobs_" + keyword + timestamp + ".csv")
 random_search_id = randint(100000000000000000000000000000000, 999999999999999999999999999999999)
-# print('random_search_id is ', random_search_id)
 data_test_zurich = {'__seo_search':'search',
                     '__search_freetext':keyword,
                     '__search_city':location[0],
@@ -32,8 +29,8 @@ headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:107.0) Gec
         'Accept-Language':'en-US,en;q=0.5',
         'Origin':'https://www.freelance.de',
         'Referer':'https://www.freelance.de/Projekte/K/IT-Entwicklung-Projekte/?_offset=',
-        'Connection':'keep-alive'
-        }
+        'Connection':'keep-alive'}
+
 def process_jobs(csv_file, all_jobs, csv_file_timestamped) -> None:
     if os.path.exists(csv_file):
         job_list_df = pd.read_csv(csv_file)
@@ -42,7 +39,7 @@ def process_jobs(csv_file, all_jobs, csv_file_timestamped) -> None:
         for job in all_jobs.values:
             if job[1] not in job_list_df.values:
                 job_list_df_new.loc[len(job_list_df_new)] = job
-        print("Length of dataframe: ", print(len(job_list_df_new.index)))
+        # print("Length of dataframe: ", print(len(job_list_df_new.index)))
         if not job_list_df_new.empty:
             print("New jobs:")
             print(job_list_df_new.to_markdown(tablefmt="fancy_grid"))
@@ -97,6 +94,7 @@ def parse_website(website):
             response_next = ss.get(url_next)
             soup_next = BeautifulSoup(response_next.text, "html.parser")
             all_jobs = jobs_info(soup_next, all_jobs, website)
+            
             # following is to doublecheck if we are still in the same search results
             # pagination_next = soup_next.find('div', id='pagination').p
             # print(url_next)   

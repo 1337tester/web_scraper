@@ -118,8 +118,6 @@ try:
     job_list_df_new = pd.DataFrame()
     for job in all_jobs:
         if job[1] not in job_list_df.values :
-            # print(*job, sep = "\n")
-            # print(separator)
             series = pd.Series(job)
             job_list_df_new = job_list_df_new.append(series, ignore_index=True)
     job_list_df = pd.DataFrame(all_jobs)
