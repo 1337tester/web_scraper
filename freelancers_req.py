@@ -107,7 +107,7 @@ def jobs_info(soup, df, website):
 
 @click.command()
 @click.option('--website', default="no_website", help='Insert webpage to parse')
-def parse_website(website):
+def parse_website(website) -> None:
     with requests.Session() as ss:
         all_jobs = pd.DataFrame(columns = df_columns)
         url = '{domain}/Projekte/K/IT-Entwicklung-Projekte/?_offset='.format(domain = website)
