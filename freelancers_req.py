@@ -7,6 +7,10 @@ import datetime
 from random import randint
 import click
 import logging
+from dotenv import dotenv_values
+
+# env variables
+config = dotenv_values(dotenv_path=".env")
 
 # relevant data for searches
 keyword = "test"
@@ -108,11 +112,11 @@ def jobs_info(soup, df, website):
     return df
 
 @click.command()
-@click.option('--website', default="no_website", help='Insert webpage to parse')
+@click.option('--website', default=config["COL_NAME"], help='Insert webpage to parse')
 def parse_website(website) -> None:
     with requests.Session() as ss:
         all_jobs = pd.DataFrame(columns = df_columns)
-        url = '{domain}/Projekte/K/IT-Entwicklung-Projekte/?_offset='.format(domain = website)
+        url =  f'{website}/Projekte/K/IT-Entwicklung-Projekte/?_offset='
         ss.headers = headers
         response1 = ss.post(url=url, data=data_test_zurich)
         soup1 = BeautifulSoup(markup=response1.text, features="html.parser")
@@ -126,7 +130,7 @@ def parse_website(website) -> None:
         # go through the next pages and scrape
         for pages in range(1, next_pages + 1):
             offset = pages * 20
-            url_next = '{domain}/Projekte/K/IT-Entwicklung-Projekte/?_offset={offset}&__search_sort_by=1&search_id={id}'.format(domain = website, offset = offset, id = random_search_id)
+            url_next = f'{website}/Projekte/K/IT-Entwicklung-Projekte/?_offset={offset}&__search_sort_by=1&search_id={random_search_id}'
             response_next = ss.get(url=url_next)
             soup_next = BeautifulSoup(markup=response_next.text, features="html.parser")
             all_jobs = jobs_info(soup=soup_next, df=all_jobs, website=website)
