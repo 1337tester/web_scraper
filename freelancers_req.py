@@ -64,8 +64,8 @@ headers = {
         }
 
 def process_jobs(csv_file, all_jobs, csv_file_timestamped) -> None:
-    if os.path.exists(csv_file):
-        job_list_df = pd.read_csv(csv_file)
+    if os.path.exists(path=csv_file):
+        job_list_df = pd.read_csv(filepath_or_buffer=csv_file)
         job_list_df_new = pd.DataFrame(columns = df_columns)
         
         for job in all_jobs.values:
@@ -76,7 +76,9 @@ def process_jobs(csv_file, all_jobs, csv_file_timestamped) -> None:
             print("New jobs:")
             print(job_list_df_new.to_markdown(tablefmt="fancy_grid"))
             job_list_df_new.to_csv(csv_file_timestamped)
-        else: print("There are no new jobs for this searchterm")
+        else:
+            print("There are no new jobs for this searchterm")
+            print(all_jobs.to_markdown(tablefmt="fancy_grid"))
         all_jobs.to_csv(csv_file)
     else:
         print("No previous jobs found for this searchterm, new jobs found: ")
@@ -112,11 +114,11 @@ def parse_website(website) -> None:
         all_jobs = pd.DataFrame(columns = df_columns)
         url = '{domain}/Projekte/K/IT-Entwicklung-Projekte/?_offset='.format(domain = website)
         ss.headers = headers
-        response1 = ss.post(url, data=data_test_zurich)
-        soup1 = BeautifulSoup(response1.text, "html.parser")
-        all_jobs = jobs_info(soup1, all_jobs, website)
+        response1 = ss.post(url=url, data=data_test_zurich)
+        soup1 = BeautifulSoup(markup=response1.text, features="html.parser")
+        all_jobs = jobs_info(soup=soup1, df=all_jobs, website=website)
         
-        pagination1 = soup1.find('div', id='pagination').p
+        pagination1 = soup1.find(name='div', id='pagination').p
         next_pages = math.ceil((int(pagination1.text.split()[3]) - 20) / 20)
         
         logging.debug(f"Number of pages - {next_pages}")        
@@ -125,17 +127,17 @@ def parse_website(website) -> None:
         for pages in range(1, next_pages + 1):
             offset = pages * 20
             url_next = '{domain}/Projekte/K/IT-Entwicklung-Projekte/?_offset={offset}&__search_sort_by=1&search_id={id}'.format(domain = website, offset = offset, id = random_search_id)
-            response_next = ss.get(url_next)
-            soup_next = BeautifulSoup(response_next.text, "html.parser")
-            all_jobs = jobs_info(soup_next, all_jobs, website)
+            response_next = ss.get(url=url_next)
+            soup_next = BeautifulSoup(markup=response_next.text, features="html.parser")
+            all_jobs = jobs_info(soup=soup_next, df=all_jobs, website=website)
             
             # following is to doublecheck if we are still in the same search results
-            pagination_next = soup_next.find('div', id='pagination').p
+            pagination_next = soup_next.find(name='div', id='pagination').p
             print(url_next)   
             print(pagination_next.text.split())
         
         # read csv file and write into it new entries
-        process_jobs(csv_file, all_jobs, csv_file_timestamped)
+        process_jobs(csv_file=csv_file, all_jobs=all_jobs, csv_file_timestamped=csv_file_timestamped)
     
 if __name__ == '__main__':
     parse_website()
