@@ -6,5 +6,6 @@ Learning web scraping and getting content from websites
 Have python 3+,
 pip install -r requirements.txt
 
-## Code visualised
-![Visualization of the codebase](./diagram.svg)
+## Code visualised  
+
+![Visualization of the codebase](./diagram.svg)  
